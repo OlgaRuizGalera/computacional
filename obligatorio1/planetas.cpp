@@ -2,13 +2,11 @@
 #include <cmath>
 #include <fstream>
 
-/* h es el paso que quiero usar, y le doy un valor incial que yo quiera
-/* puedo declarar h aqui fuera o dentro del int main
-/*PROBAR LOS DOS*/
-
-#define h 0.5
+#define h 1.0
 void aceleracion (float m[9], float r[9][2], float a[9][2]);
 void posicion (float r[9][2], float v[9][2], float a[9][2]);
+void funcionw (float v[9][2], float a[9][2], float w[9][2]);
+void velocidad (float v[9][2], float a[9][2], float w[9][2]);
 
 
 using namespace std;
@@ -17,25 +15,65 @@ int main (void)
 {
     /* Necesito matrices de aceleracion, posicion, velocidad, w, m
     /*Matrices porque son varios planetas cada uno con 3 coordenadas espaciales
-    /* Variable t que incialmente tome el valor 0 y que vvaya incrementando con h
-    /* fichero en el que guardar los datos*/
+    /* Variable t que incialmente tome el valor 0 y que vaya incrementando con h
+    /* fichero en el que guardar los datos con ofstream y leer los datos con ifstream*/
 
-    ofstream fichero;
+    ofstream  fich;
+    ifstream fichinicio;
     float a[9][2], v[9][2], r[9][2], m[9], w[9][2];
     float t;
     int i, j;
 
+    t=0.0;
 
-    /* Funcion para calcular la aceleracion_1 en t, abro fichero y grabo valor inicial de posicion
-    /* Bucle: 
-    /* Calculo aceleración_1 en t 
-    /* Evaluo r (t+h) y w(t)
-    /* Paso r(t+h) al fichero
-    /* Evaluo a(t+h) y v(t+h)
-    /* Incremento t*/
-
-
+    /*Abro el fichero y grabo los valores iniciales
+    /*Inicio bucle para ir incrementando y grabando los valores en el fichero hasta un tiempo maximo
+    /*Cuando acabe el bucle cierro el fichero*/
     
+    fichinicio.open ("valoresiniciales.txt");
+
+    for (i=0; i=8; i++)
+    {
+        fichinicio>> m[i];
+    }
+
+    for (i=0; i=8; i++)
+    {
+        for (j=0; j=1; j++)
+        {
+            fichinicio>> r[i][j];
+        }
+    }
+
+     for (i=0; i=8; i++)
+    {
+        for (j=0; j=1; j++)
+        {
+            fichinicio>> v[i][j];
+        }
+    }
+
+    fichinicio.close ();
+    fich.open ("posiciones.txt");
+
+    while (t<10)
+    {
+        aceleracion (m, r, a);
+        funcionw (v, a, w);
+        posicion (r, v, a);
+        for (i=0; i=8; i++)
+        {
+            fich<<r[i][0];
+            fich<<r[i][1];
+            fich<<endl;
+        }
+        aceleracion (m, r, a);
+        velocidad (v, a, w);
+        t=t+h;
+    }
+    fich.close();
+    return 0;
+
     
 }
 
@@ -46,7 +84,7 @@ int main (void)
 /* Necesita el vector posicion y el vector de masa
 /* Toma la aceleracion yes tipo void porque solo rellena la matriz aceleracion*/
 
-void aceleracion (float m[], float r[9][2], float a[9][2])
+void aceleracion (float m[9], float r[9][2], float a[9][2])
 {
     int i, j, k;
     float mod,  raux[9][2];
@@ -97,4 +135,33 @@ void posicion (float r[9][2], float v[9][2], float a[9][2])
 /*Le paso la velocidad y la aceleracion
 /*Tipo void porque no devuelve valor, solo rellena*/
 
-void funcionw (float v[9][2], float a[9][2])
+void funcionw (float v[9][2], float a[9][2], float w[9][2])
+{
+    int i, j;
+    for (i=0; i=8; i++)
+    {
+        for (j=0; j=1; j++)
+        {
+            w[i][j]=v[i][j]+(h/2)*a[i][j];
+        }
+    }
+    return;
+}
+
+/*Funcion para evaluar la velocidad
+/*Le paso la aceleracion y la w*/
+void velocidad (float v[9][2], float a[9][2], float w[9][2])
+{
+    int i, j;
+    for (i=0; i=8; i++)
+    {
+        for (j=0; j=1; j++)
+        {
+            v[i][j]=w[i][j]+(h/2)*a[i][j];
+        }
+    }
+    return;
+
+}
+
+
