@@ -30,7 +30,7 @@ int main (void)
     /*Inicio bucle para ir incrementando y grabando los valores en el fichero hasta un tiempo maximo
     /*Cuando acabe el bucle cierro el fichero*/
     
-    fichinicio.open ("valoresiniciales.txt");
+    fichinicio.open ("valoresiniciales");
 
     for (i=0; i=8; i++)
     {
