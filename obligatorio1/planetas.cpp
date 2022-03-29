@@ -13,44 +13,31 @@ using namespace std;
 
 int main (void)
 {
-    /* Necesito matrices de aceleracion, posicion, velocidad, w, m
-    /*Matrices porque son varios planetas cada uno con 3 coordenadas espaciales
-    /* Variable t que incialmente tome el valor 0 y que vaya incrementando con h
-    /* fichero en el que guardar los datos con ofstream y leer los datos con ifstream*/
-
     ofstream  fich;
     ifstream fichinicio;
     float a[9][2], v[9][2], r[9][2], m[9], w[9][2];
     float t;
-    int i, j;
+    int i, j, k, l;
 
     t=0.0;
 
-    /*Abro el fichero y grabo los valores iniciales
-    /*Inicio bucle para ir incrementando y grabando los valores en el fichero hasta un tiempo maximo
-    /*Cuando acabe el bucle cierro el fichero*/
-    
     fichinicio.open ("valoresiniciales");
 
-    for (i=0; i=8; i++)
+    for (i=0; i<9; i++)
     {
         fichinicio>> m[i];
     }
 
-    for (i=0; i=8; i++)
+    for (j=0; j<9; j++)
     {
-        for (j=0; j=1; j++)
-        {
-            fichinicio>> r[i][j];
-        }
+        fichinicio>> r[j][0];
+        fichinicio>> r[j][1];
     }
 
-     for (i=0; i=8; i++)
+     for (k=0; k<9; k++)
     {
-        for (j=0; j=1; j++)
-        {
-            fichinicio>> v[i][j];
-        }
+       fichinicio>> v[k][0];
+       fichinicio>> v[k][1];
     }
 
     fichinicio.close ();
@@ -61,10 +48,10 @@ int main (void)
         aceleracion (m, r, a);
         funcionw (v, a, w);
         posicion (r, v, a);
-        for (i=0; i=8; i++)
+        for (l=0; l<9; l++)
         {
-            fich<<r[i][0];
-            fich<<r[i][1];
+            fich<<r[l][0];
+            fich<<r[l][1];
             fich<<endl;
         }
         aceleracion (m, r, a);
@@ -88,16 +75,16 @@ void aceleracion (float m[9], float r[9][2], float a[9][2])
 {
     int i, j, k;
     float mod,  raux[9][2];
-    for (i=0; i=8; i++ )
+    for (i=0; i<9; i++ )
     {
-        for (j=0; j=8; j++)
+        for (j=0; j<9; j++)
         {
             if (j!=i)
             {
                 mod=pow(r[i][0]-r[j][0],2)+pow(r[i][1]-r[j][1],2);
                 mod=sqrt(mod);
                 mod=pow(mod, 3);
-                for (k=0; k=1; k++)
+                for (k=0; k<2; k++)
                 {
                     
                     raux[i][k]=r[i][k]-r[j][k];
@@ -121,9 +108,9 @@ void posicion (float r[9][2], float v[9][2], float a[9][2])
 {
     int i, j;
 
-    for (i=0; i=8; i++)
+    for (i=0; i<9; i++)
     {
-        for (j=0; j=1; j++)
+        for (j=0; j<2; j++)
         {
             r[i][j]= r[i][j]+h*v[i][j]+(h*h/2)*a[i][j];
         }
@@ -138,9 +125,9 @@ void posicion (float r[9][2], float v[9][2], float a[9][2])
 void funcionw (float v[9][2], float a[9][2], float w[9][2])
 {
     int i, j;
-    for (i=0; i=8; i++)
+    for (i=0; i<9; i++)
     {
-        for (j=0; j=1; j++)
+        for (j=0; j<2; j++)
         {
             w[i][j]=v[i][j]+(h/2)*a[i][j];
         }
@@ -153,9 +140,9 @@ void funcionw (float v[9][2], float a[9][2], float w[9][2])
 void velocidad (float v[9][2], float a[9][2], float w[9][2])
 {
     int i, j;
-    for (i=0; i=8; i++)
+    for (i=0; i<9; i++)
     {
-        for (j=0; j=1; j++)
+        for (j=0; j<2; j++)
         {
             v[i][j]=w[i][j]+(h/2)*a[i][j];
         }
