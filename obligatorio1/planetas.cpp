@@ -3,6 +3,9 @@
 #include <fstream>
 
 #define h 1.0
+#define G 6.67e-11
+#define M 1.99e30
+#define c 1.49e11
 void aceleracion (float m[9], float r[9][2], float a[9][2]);
 void posicion (float r[9][2], float v[9][2], float a[9][2]);
 void funcionw (float v[9][2], float a[9][2], float w[9][2]);
@@ -40,6 +43,7 @@ int main (void)
        fichinicio>> v[k][0];
        fichinicio>> v[k][1];
     }
+    /*normalizar me cago*/
 
     fichinicio.close ();
     fich.open ("posiciones.txt");
@@ -152,6 +156,19 @@ void energia (float m[9], float v[9][2], float e[9], float r[9][2])
        e[i]=0.5*m[i]*modv-m[i]/modr;      
     }
 return;
+}
+
+void normalizacion (float r[9][2], float v[9][2], m[9])
+{
+    int i, j;
+    for (i=0; i<9; i++)
+    {
+        
+        for (j=0; j<2; j++)
+        {
+
+        }
+    }
 }
 
 
