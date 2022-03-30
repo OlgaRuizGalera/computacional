@@ -94,6 +94,7 @@ void aceleracion (float m[9], float r[9][2], float a[9][2])
         {
             if (j!=i)
             {
+                mod=0.0
                 mod=pow((r[i][0]-r[j][0]),2)+pow((r[i][1]-r[j][1]),2);
                 mod=sqrt(mod);
                 mod=pow(mod, 3);
