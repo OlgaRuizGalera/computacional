@@ -63,7 +63,7 @@ int main (void)
     fich<<endl;
 
 
-    while (t<10)
+    while (t<100)
     {
         posicion (r, v, a);
         aceleracion (m, r, a);
