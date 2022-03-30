@@ -3,7 +3,7 @@
 #include <fstream>
 #include <cstring>
 
-#define h 0.001
+#define h 0.01
 #define G 6.67e-11
 #define M 1.99e30
 #define c 1.49e11
@@ -35,14 +35,14 @@ int main (void)
 
     for (j=0; j<9; j++)
     {
-        fichinicio>> r[j][0];
+        fichinicio>> r[j][0]; 
         fichinicio>> r[j][1];
     }
 
      for (k=0; k<9; k++)
     {
        fichinicio>> v[k][0];
-       fichinicio>> v[k][1];
+       fichinicio>>v[k][1];
     }
 
     fichinicio.close ();
@@ -50,33 +50,33 @@ int main (void)
     fich.open ("posiciones.txt");
     fichenergia.open ("energia.txt");
 
+
     aceleracion (m, r, a);
     funcionw (v, a, w);
     energia (m, v, e, r);
     for (l=0; l<9; l++)
         {
             fich<<r[l][0] << "," << r[l][1]<< endl;
-            fichenergia<<e[l] << ",";
+            fichenergia<<e[l] << ","<<endl;
         }
+    fichenergia<< endl;
     fich<<endl;
-    fichenergia<<endl;
-    posicion (r, v, a);
+
 
     while (t<10)
     {
+        posicion (r, v, a);
         aceleracion (m, r, a);
+        velocidad (v, a, w);
         funcionw (v, a, w);
         energia (m, v, e, r);
         for (l=0; l<9; l++)
         {
             fich<<r[l][0] << "," << r[l][1]<< endl;
-            fichenergia<<e[l] << ",";
+            fichenergia<<e[l] << ","<<endl;
         }
         fichenergia<< endl;
         fich<<endl;
-        posicion (r, v, a);
-        aceleracion (m, r, a);
-        velocidad (v, a, w);
         t=t+h;
     }
     fich.close();
@@ -94,7 +94,7 @@ void aceleracion (float m[9], float r[9][2], float a[9][2])
         {
             if (j!=i)
             {
-                mod=pow(r[i][0]-r[j][0],2)+pow(r[i][1]-r[j][1],2);
+                mod=pow((r[i][0]-r[j][0]),2)+pow((r[i][1]-r[j][1]),2);
                 mod=sqrt(mod);
                 mod=pow(mod, 3);
                 for (k=0; k<2; k++)
