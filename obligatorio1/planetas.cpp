@@ -1,8 +1,9 @@
 #include <iostream>
 #include <cmath>
 #include <fstream>
+#include <cstring>
 
-#define h 1.0
+#define h 0.001
 #define G 6.67e-11
 #define M 1.99e30
 #define c 1.49e11
@@ -11,7 +12,7 @@ void posicion (float r[9][2], float v[9][2], float a[9][2]);
 void funcionw (float v[9][2], float a[9][2], float w[9][2]);
 void velocidad (float v[9][2], float a[9][2], float w[9][2]);
 void energia (float m[9], float v[9][2], float e[9], float r[9][2]);
-
+void normalizacion (float r[9][2], float v[9][2], float m[9]);
 
 using namespace std;
 
@@ -25,7 +26,7 @@ int main (void)
 
     t=0.0;
 
-    fichinicio.open ("valoresiniciales");
+    fichinicio.open ("valoresiniciales.txt");
 
     for (i=0; i<9; i++)
     {
@@ -43,25 +44,37 @@ int main (void)
        fichinicio>> v[k][0];
        fichinicio>> v[k][1];
     }
-    /*normalizar me cago*/
 
     fichinicio.close ();
+    normalizacion (r, v, m);
     fich.open ("posiciones.txt");
     fichenergia.open ("energia.txt");
+
+    aceleracion (m, r, a);
+    funcionw (v, a, w);
+    energia (m, v, e, r);
+    for (l=0; l<9; l++)
+        {
+            fich<<r[l][0] << "," << r[l][1]<< endl;
+            fichenergia<<e[l] << ",";
+        }
+    fich<<endl;
+    fichenergia<<endl;
+    posicion (r, v, a);
 
     while (t<10)
     {
         aceleracion (m, r, a);
         funcionw (v, a, w);
-        posicion (r, v, a);
         energia (m, v, e, r);
         for (l=0; l<9; l++)
         {
-            fich<<r[l][0];
-            fich<<r[l][1];
-            fich<<endl;
-            fichenergia<<e[i];
+            fich<<r[l][0] << "," << r[l][1]<< endl;
+            fichenergia<<e[l] << ",";
         }
+        fichenergia<< endl;
+        fich<<endl;
+        posicion (r, v, a);
         aceleracion (m, r, a);
         velocidad (v, a, w);
         t=t+h;
@@ -69,10 +82,7 @@ int main (void)
     fich.close();
     fichenergia.close ();
     return 0;
-
-    
 }
-
 
 void aceleracion (float m[9], float r[9][2], float a[9][2])
 {
@@ -102,7 +112,6 @@ void aceleracion (float m[9], float r[9][2], float a[9][2])
     return ;
 }
 
-
 void posicion (float r[9][2], float v[9][2], float a[9][2])
 {
     int i, j;
@@ -117,7 +126,6 @@ void posicion (float r[9][2], float v[9][2], float a[9][2])
     return;
 }
 
-
 void funcionw (float v[9][2], float a[9][2], float w[9][2])
 {
     int i, j;
@@ -130,7 +138,6 @@ void funcionw (float v[9][2], float a[9][2], float w[9][2])
     }
     return;
 }
-
 
 void velocidad (float v[9][2], float a[9][2], float w[9][2])
 {
@@ -148,27 +155,29 @@ void velocidad (float v[9][2], float a[9][2], float w[9][2])
 
 void energia (float m[9], float v[9][2], float e[9], float r[9][2])
 {
-    int i, j, modv, modr;
-    for (i=1; i<9; i++)
+    int i, modv, modr;
+    for (i=0; i<9; i++)
     {
        modv=pow(v[i][0],2)+pow(v[i][1],2); 
        modr=pow(r[i][0],2)+pow(r[i][1],2);
        e[i]=0.5*m[i]*modv-m[i]/modr;      
     }
-return;
+    return;
 }
 
-void normalizacion (float r[9][2], float v[9][2], m[9])
+void normalizacion (float r[9][2], float v[9][2], float m[9])
 {
     int i, j;
     for (i=0; i<9; i++)
     {
-        
+        m[i]=m[i]/M;
         for (j=0; j<2; j++)
         {
-
+            v[i][j]=v[i][j]*(sqrt(c/(G*M)));
+            r[i][j]=r[i][j]/c;
         }
     }
+    return;
 }
 
 
