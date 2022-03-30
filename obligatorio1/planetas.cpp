@@ -7,15 +7,16 @@ void aceleracion (float m[9], float r[9][2], float a[9][2]);
 void posicion (float r[9][2], float v[9][2], float a[9][2]);
 void funcionw (float v[9][2], float a[9][2], float w[9][2]);
 void velocidad (float v[9][2], float a[9][2], float w[9][2]);
+void energia (float m[9], float v[9][2], float e[9], float r[9][2]);
 
 
 using namespace std;
 
 int main (void)
 {
-    ofstream  fich;
+    ofstream  fich, fichenergia;
     ifstream fichinicio;
-    float a[9][2], v[9][2], r[9][2], m[9], w[9][2];
+    float a[9][2], v[9][2], r[9][2], m[9], w[9][2], e[9];
     float t;
     int i, j, k, l;
 
@@ -42,34 +43,32 @@ int main (void)
 
     fichinicio.close ();
     fich.open ("posiciones.txt");
+    fichenergia.open ("energia.txt");
 
     while (t<10)
     {
         aceleracion (m, r, a);
         funcionw (v, a, w);
         posicion (r, v, a);
+        energia (m, v, e, r);
         for (l=0; l<9; l++)
         {
             fich<<r[l][0];
             fich<<r[l][1];
             fich<<endl;
+            fichenergia<<e[i];
         }
         aceleracion (m, r, a);
         velocidad (v, a, w);
         t=t+h;
     }
     fich.close();
+    fichenergia.close ();
     return 0;
 
     
 }
 
-
-
-
-/* Funcion para calcular la aceleracion
-/* Necesita el vector posicion y el vector de masa
-/* Toma la aceleracion yes tipo void porque solo rellena la matriz aceleracion*/
 
 void aceleracion (float m[9], float r[9][2], float a[9][2])
 {
@@ -100,10 +99,6 @@ void aceleracion (float m[9], float r[9][2], float a[9][2])
 }
 
 
-/*Funcion para evaluar el vector posicion
-/*Le paso el vector velocidad, aceleracion y posicion
-/* Void porque rellena el vector*/
-
 void posicion (float r[9][2], float v[9][2], float a[9][2])
 {
     int i, j;
@@ -118,9 +113,6 @@ void posicion (float r[9][2], float v[9][2], float a[9][2])
     return;
 }
 
-/*Funcion para calcular la w
-/*Le paso la velocidad y la aceleracion
-/*Tipo void porque no devuelve valor, solo rellena*/
 
 void funcionw (float v[9][2], float a[9][2], float w[9][2])
 {
@@ -135,8 +127,7 @@ void funcionw (float v[9][2], float a[9][2], float w[9][2])
     return;
 }
 
-/*Funcion para evaluar la velocidad
-/*Le paso la aceleracion y la w*/
+
 void velocidad (float v[9][2], float a[9][2], float w[9][2])
 {
     int i, j;
@@ -149,6 +140,18 @@ void velocidad (float v[9][2], float a[9][2], float w[9][2])
     }
     return;
 
+}
+
+void energia (float m[9], float v[9][2], float e[9], float r[9][2])
+{
+    int i, j, modv, modr;
+    for (i=1; i<9; i++)
+    {
+       modv=pow(v[i][0],2)+pow(v[i][1],2); 
+       modr=pow(r[i][0],2)+pow(r[i][1],2);
+       e[i]=0.5*m[i]*modv-m[i]/modr;      
+    }
+return;
 }
 
 
