@@ -3,7 +3,7 @@
 #include <fstream>
 #include <cstring>
 
-#define h 0.01
+#define h 0.1
 #define G 6.67e-11
 #define M 1.99e30
 #define c 1.49e11
@@ -47,7 +47,7 @@ int main (void)
 
     fichinicio.close ();
     normalizacion (r, v, m);
-    fich.open ("posiciones.txt");
+    fich.open ("planetas_data.dat");
     fichenergia.open ("energia.txt");
 
 
@@ -86,25 +86,27 @@ int main (void)
 
 void aceleracion (float m[9], float r[9][2], float a[9][2])
 {
-    int i, j, k;
-    float mod,  raux[9][2];
+    int i, j, k, z, l;
+    float mod;
+    for (l=0;l<9; l++)
+    {
+        for (z=0;z<2;z++)
+        {
+            a[l][z]=0;
+        }
+    }
     for (i=0; i<9; i++ )
     {
         for (j=0; j<9; j++)
         {
             if (j!=i)
             {
-                mod=0.0
-                mod=pow((r[i][0]-r[j][0]),2)+pow((r[i][1]-r[j][1]),2);
-                mod=sqrt(mod);
-                mod=pow(mod, 3);
+               mod=sqrt(pow((r[i][0]-r[j][0]),2)+pow((r[i][1]-r[j][1]),2));
                 for (k=0; k<2; k++)
                 {
-                    
-                    raux[i][k]=r[i][k]-r[j][k];
-                    a[i][k]=-(m[j]*raux[i][k])/mod;
+                    a[i][k]=a[i][k]-m[j]*(r[i][k]-r[j][k])/pow(abs(mod),3);
 
-                }                
+                }            
             }
         
         }
