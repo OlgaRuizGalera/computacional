@@ -11,7 +11,7 @@ void aceleracion (float m[9], float r[9][2], float a[9][2]);
 void posicion (float r[9][2], float v[9][2], float a[9][2]);
 void funcionw (float v[9][2], float a[9][2], float w[9][2]);
 void velocidad (float v[9][2], float a[9][2], float w[9][2]);
-void energia (float m[9], float v[9][2], float e[9], float r[9][2]);
+void energia (float m[9], float v[9][2], float r[9][2], float& etot);
 void normalizacion (float r[9][2], float v[9][2], float m[9]);
 
 using namespace std;
@@ -20,8 +20,8 @@ int main (void)
 {
     ofstream  fich, fichenergia;
     ifstream fichinicio;
-    float a[9][2], v[9][2], r[9][2], m[9], w[9][2], e[9];
-    float t;
+    float a[9][2], v[9][2], r[9][2], m[9], w[9][2];
+    float t, etot;
     int i, j, k, l;
 
     t=0.0;
@@ -53,13 +53,12 @@ int main (void)
 
     aceleracion (m, r, a);
     funcionw (v, a, w);
-    energia (m, v, e, r);
+    energia (m, v, r, etot);
+    fichenergia<<etot<<","<<t<<endl;
     for (l=0; l<9; l++)
         {
             fich<<r[l][0] << "," << r[l][1]<< endl;
-            fichenergia<<e[l] << ","<<endl;
         }
-    fichenergia<< endl;
     fich<<endl;
 
 
@@ -69,13 +68,12 @@ int main (void)
         aceleracion (m, r, a);
         velocidad (v, a, w);
         funcionw (v, a, w);
-        energia (m, v, e, r);
+        energia (m, v, r, etot);
+        fichenergia<<etot<<","<<t<<endl;
         for (l=0; l<9; l++)
         {
             fich<<r[l][0] << "," << r[l][1]<< endl;
-            fichenergia<<e[l] << ","<<endl;
         }
-        fichenergia<< endl;
         fich<<endl;
         t=t+h;
     }
@@ -156,14 +154,18 @@ void velocidad (float v[9][2], float a[9][2], float w[9][2])
 
 }
 
-void energia (float m[9], float v[9][2], float e[9], float r[9][2])
+void energia (float m[9], float v[9][2], float r[9][2], float& etot)
 {
-    int i, modv, modr;
-    for (i=0; i<9; i++)
+    int i;
+    float modv, modr;
+    float e;
+    etot=0.0;
+    for (i=1; i<9; i++)
     {
        modv=pow(v[i][0],2)+pow(v[i][1],2); 
-       modr=pow(r[i][0],2)+pow(r[i][1],2);
-       e[i]=0.5*m[i]*modv-m[i]/modr;      
+       modr=sqrt(pow((r[i][0]-r[0][0]),2)+pow((r[i][1]-r[0][1]),2));      
+       e=0.5*m[i]*modv-m[i]*m[0]/modr;
+       etot=etot+e;      
     }
     return;
 }
