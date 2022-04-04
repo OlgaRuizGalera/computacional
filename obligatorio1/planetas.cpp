@@ -3,7 +3,7 @@
 #include <fstream>
 #include <cstring>
 
-#define h 0.1
+#define h 0.01
 #define G 6.67e-11
 #define M 1.99e30
 #define c 1.49e11
@@ -47,7 +47,7 @@ int main (void)
 
     fichinicio.close ();
     normalizacion (r, v, m);
-    fich.open ("planetas_data.dat");
+    fich.open ("planets_data.dat");
     fichenergia.open ("energia.txt");
 
 
@@ -63,7 +63,7 @@ int main (void)
     fich<<endl;
 
 
-    while (t<100)
+    while (t<1000)
     {
         posicion (r, v, a);
         aceleracion (m, r, a);
