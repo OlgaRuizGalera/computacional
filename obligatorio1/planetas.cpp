@@ -23,9 +23,10 @@ int main (void)
     float a[9][2], v[9][2], r[9][2], m[9], w[9][2];
     float t, etot;
     bool per[9], cond1[9], cond2[9];
-    int i, j, k, l, z[9];
+    int i, j, k, l, o, z[9];
 
     t=0.0;
+    o=0;
 
     fichinicio.open ("valoresiniciales.txt");
 
@@ -74,7 +75,7 @@ int main (void)
 
     /*Empiezo el bucle*/
 
-    while (t<10000)
+    while (t<1000)
     {
         posicion (r, v, a);
         for (i=0; i<9; i++)
@@ -103,11 +104,16 @@ int main (void)
         funcionw (v, a, w);
         energia (m, v, r, etot);
         fichenergia<<t<<" "<<etot<<endl;
-        for (l=0; l<9; l++)
+        if (o==50)
         {
+           for (l=0; l<9; l++)
+            {
             fich<<r[l][0] << "," << r[l][1]<< endl;
+            } 
+            fich<<endl;
+            o=0;
         }
-        fich<<endl;
+        else o=o+1;
         t=t+h;
     }
     fich.close();
