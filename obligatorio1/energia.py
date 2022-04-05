@@ -15,8 +15,8 @@ ax=fig.add_subplot(111)
 ax.grid(True)
 
 
-y_min = -10
-y_max = 30
+y_min = -0.000120
+y_max = -0.000106
 
 ax.set_ylim(y_min, y_max)
 
