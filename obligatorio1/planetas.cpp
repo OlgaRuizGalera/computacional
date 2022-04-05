@@ -3,7 +3,7 @@
 #include <fstream>
 #include <cstring>
 
-#define h 0.01
+#define h 0.1
 #define G 6.67e-11
 #define M 1.99e30
 #define c 1.49e11
@@ -18,11 +18,12 @@ using namespace std;
 
 int main (void)
 {
-    ofstream  fich, fichenergia;
+    ofstream  fich, fichenergia, periodo;
     ifstream fichinicio;
     float a[9][2], v[9][2], r[9][2], m[9], w[9][2];
     float t, etot;
-    int i, j, k, l;
+    bool per[9], cond1[9], cond2[9];
+    int i, j, k, l, z[9];
 
     t=0.0;
 
@@ -45,31 +46,63 @@ int main (void)
        fichinicio>>v[k][1];
     }
 
+    for (i=0; i<9; i++)
+    {
+        per[i]=false;
+        cond1[i]=false;
+        cond2[i]=false;
+        z[i]=0;
+    }
+
     fichinicio.close ();
     normalizacion (r, v, m);
     fich.open ("planets_data.dat");
     fichenergia.open ("energia.txt");
+    periodo.open ("periodos.dat");
 
+    /* Primeros cálculos*/
 
     aceleracion (m, r, a);
     funcionw (v, a, w);
     energia (m, v, r, etot);
-    fichenergia<<etot<<","<<t<<endl;
+    fichenergia<<t<<" "<<etot<<endl;
     for (l=0; l<9; l++)
         {
             fich<<r[l][0] << "," << r[l][1]<< endl;
         }
     fich<<endl;
 
+    /*Empiezo el bucle*/
 
-    while (t<1000)
+    while (t<10000)
     {
         posicion (r, v, a);
+        for (i=0; i<9; i++)
+        {
+            if (per[i]==false)
+            {
+                if (r[i][1]>0 && cond2[i]==false)
+                {
+                    z[i]=z[i]+1;
+                    cond1[i]=true;
+                }
+                else if (r[i][1]<0 && cond1[i]==true)
+                {
+                    z[i]=z[i]+1;
+                    cond2[i]=true;
+                }
+                else if (r[i][1]>0 && cond1[i]==true && cond2[i]==true)
+                {
+                    per[i]=true;
+                    periodo<<z[i]*h*sqrt(pow(c,3)/(G*M))/(60*60*24)<<endl;
+                }
+            }
+        }
         aceleracion (m, r, a);
         velocidad (v, a, w);
         funcionw (v, a, w);
         energia (m, v, r, etot);
-        fichenergia<<etot<<","<<t<<endl;
+        fichenergia<<t<<" "<<etot<<endl;
         for (l=0; l<9; l++)
         {
             fich<<r[l][0] << "," << r[l][1]<< endl;
@@ -79,6 +112,7 @@ int main (void)
     }
     fich.close();
     fichenergia.close ();
+    periodo.close();
     return 0;
 }
 
