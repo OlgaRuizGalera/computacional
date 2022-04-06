@@ -107,7 +107,7 @@ int main (void)
         funcionw (v, a, w);
         energia (m, v, r, etot);
         fichenergia<<t<<" "<<etot<<endl;
-        if (o==50)
+        if (o==100)
         {
            for (l=0; l<9; l++)
             {
