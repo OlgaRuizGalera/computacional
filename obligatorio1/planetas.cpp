@@ -3,7 +3,7 @@
 #include <fstream>
 #include <cstring>
 
-#define h 0.1
+#define h 0.01
 #define G 6.67e-11
 #define M 1.99e30
 #define c 1.49e11
@@ -18,7 +18,7 @@ using namespace std;
 
 int main (void)
 {
-    ofstream  fich, fichenergia, periodo;
+    ofstream  fich, fichenergia, periodo, geocentrico;
     ifstream fichinicio;
     float a[9][2], v[9][2], r[9][2], m[9], w[9][2];
     float t, etot;
@@ -60,6 +60,7 @@ int main (void)
     fich.open ("planets_data.dat");
     fichenergia.open ("energia.txt");
     periodo.open ("periodos.dat");
+    geocentrico.open ("geocentrico.dat");
 
     /* Primeros cálculos*/
 
@@ -70,12 +71,14 @@ int main (void)
     for (l=0; l<9; l++)
         {
             fich<<r[l][0] << "," << r[l][1]<< endl;
+            geocentrico<<r[l][0]-r[3][0] << "," << r[l][1]-r[3][1]<<endl;
         }
     fich<<endl;
+    geocentrico<<endl;
 
     /*Empiezo el bucle*/
 
-    while (t<1000)
+    while (t<10000)
     {
         posicion (r, v, a);
         for (i=0; i<9; i++)
@@ -109,8 +112,10 @@ int main (void)
            for (l=0; l<9; l++)
             {
             fich<<r[l][0] << "," << r[l][1]<< endl;
+            geocentrico<< r[l][0]-r[3][0]<< "," << r[l][1]-r[3][1]<< endl;
             } 
             fich<<endl;
+            geocentrico<<endl;
             o=0;
         }
         else o=o+1;
@@ -119,6 +124,7 @@ int main (void)
     fich.close();
     fichenergia.close ();
     periodo.close();
+    geocentrico.close();
     return 0;
 }
 
