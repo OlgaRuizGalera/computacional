@@ -3,7 +3,7 @@
 #include <fstream>
 #include <cstring>
 
-#define h 0.1
+#define h 0.01
 #define G 6.67e-11
 #define M 1.99e30
 #define c 1.49e11
@@ -75,7 +75,7 @@ int main (void)
 
     /*Empiezo el bucle*/
 
-    while (t<1000)
+    while (t<10000)
     {
         posicion (r, v, a);
         for (i=0; i<9; i++)
@@ -104,7 +104,7 @@ int main (void)
         funcionw (v, a, w);
         energia (m, v, r, etot);
         fichenergia<<t<<" "<<etot<<endl;
-        if (o==50)
+        if (o==100)
         {
            for (l=0; l<9; l++)
             {
