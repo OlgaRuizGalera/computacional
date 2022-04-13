@@ -13,7 +13,6 @@ int main (void)
 {
     int i, j, n, m, o, N;
     double p, E, f, T, s[7][7];
-    ifstream inicial;
     ofstream ising;
 
     /*Inicializar cosillas, ¿T es real o entero?*/
@@ -21,18 +20,15 @@ int main (void)
     N=7; 
     T=4.5;
     o=0;
-    inicial.open ("valoresiniciales.dat");
 
 
     for (i=0; i<7; i++)
     {
         for (j=0; j<7; j++)
         {
-            inicial>>s[i][j];
+            s[i][j]=1;
         }
     }
-
-    inicial.close ();
 
     ising.open ("ising.dat");
 
@@ -67,10 +63,10 @@ void minimo (double T, double E, double& p)
 {
     double v;
     v=exp(-E/T);
-    if (v<1)
+    if (v<1.0)
     {
         p=v;
     }
-    else p=1;
+    else p=1.0;
     return;
 }
