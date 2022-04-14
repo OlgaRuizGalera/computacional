@@ -11,20 +11,20 @@ using namespace std;
 
 int main (void) 
 {
-    int i, j, n, m, o, N;
-    double p, E, f, T, s[7][7];
+    int i, j, n, m, o, k, l, N, E, s[10][10];
+    double p, f, T;
     ofstream ising;
 
     /*Inicializar cosillas, ¿T es real o entero?*/
     srand(time(NULL));
-    N=7; 
+    N=10; 
     T=4.5;
     o=0;
 
 
-    for (i=0; i<7; i++)
+    for (i=0; i<N; i++)
     {
-        for (j=0; j<7; j++)
+        for (j=0; j<N; j++)
         {
             s[i][j]=1;
         }
@@ -34,14 +34,66 @@ int main (void)
 
     while (o<N*N)
     {
+        for (k=0; k<N; k++)
+        {
+            for (l=0; l<N; l++)
+            {
+                ising<<s[k][l]<<",";
+            }
+            ising<<endl;
+        }
+        ising<<endl;
+
         n=rand()%N;
         m=rand()%N;
 
-        /*Aqui un buclecillo tontorron para escribir s en un fichero*/
-
         /*Calcular energia con simetria teniendo en cuenta que m supere N y que n supere N*/
         /*Son if*/
-        E=2*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][m+1]+s[n][m-1]);
+        if (n+1>N)
+        {
+            if (m==0)
+            {
+                E=2*s[n][m]*(s[1][m]+s[n-1][m]+s[n][m+1]+s[n][N-1]);
+            }
+            else if (m+1>N)
+            {
+                E=2*s[n][m]*(s[1][m]+s[n-1][m]+s[n][1]+s[n][m-1]);
+            }
+            else
+            {
+                E=2*s[n][m]*(s[1][m]+s[n-1][m]+s[n][m+1]+s[n][m-1]);
+            }
+        }
+        else if (n==0)
+        {
+           if (m==0)
+            {
+                E=2*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][1]+s[n][N-1]);
+            }
+            else if (m+1>N)
+            {
+                E=2*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][1]+s[n][m-1]);
+            }
+            else
+            {
+                E=2*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][m+1]+s[n][m-1]);
+            } 
+        }
+        else 
+        {
+            if (m==0)
+            {
+                E=2*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][m+1]+s[n][N-1]);
+            }
+            else if (m+1>N)
+            {
+                E=2*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][1]+s[n][m-1]);
+            }
+            else
+            {
+                E=2*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][m+1]+s[n][m-1]);
+            }
+        }
 
 
         minimo(T, E, p);
@@ -50,10 +102,10 @@ int main (void)
         {
             s[n][m]=-s[n][m];
         }
-        ising<<s[n][m];
         o=o+1;
 
     }
+    ising.close ();
     return 0;
 
 }
