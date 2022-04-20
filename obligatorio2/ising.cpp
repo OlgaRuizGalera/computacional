@@ -11,15 +11,13 @@ using namespace std;
 
 int main (void) 
 {
-    int i, j, n, m, o, k, l, N, E, y, s[50][50];
-    double p, f, T;
+    int i, j, n, m, o, k, l, N, y, s[50][50];
+    double p, f, T, E;
     ofstream ising;
 
-    /*Inicializar cosillas, ¿T es real o entero?*/
     srand(time(NULL));
     N=50; 
-    T=4.5;
-    o=0;
+    T=0.2;
 
 
     for (i=0; i<N; i++)
@@ -32,7 +30,7 @@ int main (void)
 
     ising.open ("ising.dat");
 
-    for (o=0; o<100; o++)
+    for (o=0; o<200; o++)
     {
         for (y=0; y<N*N; y++)
         {
@@ -44,51 +42,51 @@ int main (void)
             {
                 if (m==0)
                 {
-                    E=2*s[n][m]*(s[1][m]+s[n-1][m]+s[n][m+1]+s[n][N-1]);
+                    E=2.0*s[n][m]*(s[1][m]+s[n-1][m]+s[n][m+1]+s[n][N-1]);
                 }
                 else if (m+1>N)
                 {
-                    E=2*s[n][m]*(s[1][m]+s[n-1][m]+s[n][1]+s[n][m-1]);
+                    E=2.0*s[n][m]*(s[1][m]+s[n-1][m]+s[n][1]+s[n][m-1]);
                 }
                 else
                 {   
-                    E=2*s[n][m]*(s[1][m]+s[n-1][m]+s[n][m+1]+s[n][m-1]);
+                    E=2.0*s[n][m]*(s[1][m]+s[n-1][m]+s[n][m+1]+s[n][m-1]);
                 }
             }
             else if (n==0)
             {
                 if (m==0)
                 {
-                    E=2*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][1]+s[n][N-1]);
+                    E=2.0*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][1]+s[n][N-1]);
                 }
                 else if (m+1>N)
                 {   
-                    E=2*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][1]+s[n][m-1]);
+                    E=2.0*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][1]+s[n][m-1]);
                 }
                 else
                 {
-                    E=2*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][m+1]+s[n][m-1]);
+                    E=2.0*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][m+1]+s[n][m-1]);
                 } 
             }
             else 
             {
                 if (m==0)
                 {
-                    E=2*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][m+1]+s[n][N-1]);
+                    E=2.0*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][m+1]+s[n][N-1]);
                 }
                 else if (m+1>N)
                 {
-                    E=2*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][1]+s[n][m-1]);
+                    E=2.0*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][1]+s[n][m-1]);
                 }   
                 else
                 {   
-                    E=2*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][m+1]+s[n][m-1]);
+                    E=2.0*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][m+1]+s[n][m-1]);
                 }
             }
 
 
             minimo(T, E, p);
-            f=rand()%1;
+            f=rand()/(RAND_MAX*1.0);
             if (f<p)
             {
                 s[n][m]=-s[n][m];
@@ -96,7 +94,7 @@ int main (void)
         }
         for (k=0; k<N; k++)
         {
-            for (l=0; l<N-2; l++)
+            for (l=0; l<N-1; l++)
             {
                 ising<<s[k][l]<<",";
             }
@@ -104,7 +102,6 @@ int main (void)
             ising<<endl;
         }
         ising<<endl;
-        o=o+1;
     }
     ising.close ();
     return 0;
