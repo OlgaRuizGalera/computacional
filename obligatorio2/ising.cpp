@@ -11,24 +11,36 @@ using namespace std;
 
 int main (void) 
 {
-    int i, j, n, m, o, k, l, N, y, s[50][50];
+    int i, j, n, m, o, k, l, N, y, s[100][100];
     double p, f, T, E;
     ofstream ising;
 
     srand(time(NULL));
-    N=50; 
+    N=100; 
     T=4.6;
 
+    for (i=0; i<N; i++)
+    {
+        for (j=0; j<N; j++)
+        {
+            s[i][j]=rand()%2;
+            if(s[i][j]==0)
+            {
+                s[i][j]=-1;
+            }
+        }
+    }
 
+    /* Ordenada pero ahora no jaja
     for (i=0; i<N; i++)
     {
         for (j=0; j<N; j++)
         {
             s[i][j]=1;
         }
-    }
+    }*/
 
-    ising.open ("ising.dat");
+    ising.open ("ising_desordenado.dat");
 
     for (o=0; o<200; o++)
     {
