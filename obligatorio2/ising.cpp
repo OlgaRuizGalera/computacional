@@ -32,7 +32,7 @@ int main (void)
 
     ising.open ("ising.dat");
 
-    for (o=0; o<100; o++)
+    for (o=0; o<200; o++)
     {
         for (y=0; y<N*N; y++)
         {
