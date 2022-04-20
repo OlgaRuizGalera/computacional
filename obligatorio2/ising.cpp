@@ -32,14 +32,15 @@ int main (void)
 
     ising.open ("ising.dat");
 
-    while (o<N*N)
+    while (o<50*N*N)
     {
         for (k=0; k<N; k++)
         {
-            for (l=0; l<N; l++)
+            for (l=0; l<N-2; l++)
             {
                 ising<<s[k][l]<<",";
             }
+            ising<<s[k][N-1];
             ising<<endl;
         }
         ising<<endl;
