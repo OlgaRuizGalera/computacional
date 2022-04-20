@@ -17,7 +17,7 @@ int main (void)
 
     srand(time(NULL));
     N=50; 
-    T=0.2;
+    T=4.6;
 
 
     for (i=0; i<N; i++)
