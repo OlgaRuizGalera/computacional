@@ -17,9 +17,9 @@ int main (void)
 
     srand(time(NULL));
     N=100; 
-    T=0.5;
+    T=4.5;
 
-    /*Configuracion desordenada
+    /*Configuracion desordenada*/
     for (i=0; i<N; i++)
     {
         for (j=0; j<N; j++)
@@ -30,18 +30,29 @@ int main (void)
                 s[i][j]=-1;
             }
         }
-    }*/
+    }
 
-    /* Configuracion ordenada*/
+    /* Configuracion ordenada
     for (i=0; i<N; i++)
     {
         for (j=0; j<N; j++)
         {
             s[i][j]=1;
         }
-    }
+    }*/
 
-    ising.open ("ising_ordenado.dat");
+    ising.open ("ising_desordenado.dat");
+
+    for (k=0; k<N; k++)
+        {
+            for (l=0; l<N-1; l++)
+            {
+                ising<<s[k][l]<<",";
+            }
+            ising<<s[k][N-1];
+            ising<<endl;
+        }
+    ising<<endl;
 
     for (o=0; o<200; o++)
     {
@@ -51,30 +62,30 @@ int main (void)
             n=rand()%N;
             m=rand()%N;
 
-            if (n+1>N)
+            if (n+1==N)
             {
                 if (m==0)
                 {
-                    E=2.0*s[n][m]*(s[1][m]+s[n-1][m]+s[n][m+1]+s[n][N-1]);
+                    E=2.0*s[n][m]*(s[0][m]+s[n-1][m]+s[n][m+1]+s[n][N-1]);
                 }
-                else if (m+1>N)
+                else if (m+1==N)
                 {
-                    E=2.0*s[n][m]*(s[1][m]+s[n-1][m]+s[n][1]+s[n][m-1]);
+                    E=2.0*s[n][m]*(s[0][m]+s[n-1][m]+s[n][0]+s[n][m-1]);
                 }
                 else
                 {   
-                    E=2.0*s[n][m]*(s[1][m]+s[n-1][m]+s[n][m+1]+s[n][m-1]);
+                    E=2.0*s[n][m]*(s[0][m]+s[n-1][m]+s[n][m+1]+s[n][m-1]);
                 }
             }
             else if (n==0)
             {
                 if (m==0)
                 {
-                    E=2.0*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][1]+s[n][N-1]);
+                    E=2.0*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][m+1]+s[n][N-1]);
                 }
-                else if (m+1>N)
+                else if (m+1==N)
                 {   
-                    E=2.0*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][1]+s[n][m-1]);
+                    E=2.0*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][0]+s[n][m-1]);
                 }
                 else
                 {
@@ -87,9 +98,9 @@ int main (void)
                 {
                     E=2.0*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][m+1]+s[n][N-1]);
                 }
-                else if (m+1>N)
+                else if (m+1==N)
                 {
-                    E=2.0*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][1]+s[n][m-1]);
+                    E=2.0*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][0]+s[n][m-1]);
                 }   
                 else
                 {   
