@@ -17,8 +17,9 @@ int main (void)
 
     srand(time(NULL));
     N=100; 
-    T=4.6;
+    T=0.5;
 
+    /*Configuracion desordenada
     for (i=0; i<N; i++)
     {
         for (j=0; j<N; j++)
@@ -29,18 +30,18 @@ int main (void)
                 s[i][j]=-1;
             }
         }
-    }
+    }*/
 
-    /* Ordenada pero ahora no jaja
+    /* Configuracion ordenada*/
     for (i=0; i<N; i++)
     {
         for (j=0; j<N; j++)
         {
             s[i][j]=1;
         }
-    }*/
+    }
 
-    ising.open ("ising_desordenado.dat");
+    ising.open ("ising_ordenado.dat");
 
     for (o=0; o<200; o++)
     {

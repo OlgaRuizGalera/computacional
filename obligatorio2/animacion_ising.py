@@ -45,8 +45,8 @@ import io
 
 # Parámetros
 # ========================================
-file_in = "ising_desordenado.dat" # Nombre del fichero de datos
-file_out = "ising_alta_desordenada" # Nombre del fichero de salida (sin extensión)
+file_in = "ising_ordenado.dat" # Nombre del fichero de datos
+file_out = "ising_baja_ordenada" # Nombre del fichero de salida (sin extensión)
 interval = 100 # Tiempo entre fotogramas en milisegundos
 save_to_file = True # False: muestra la animación por pantalla,
                      # True: la guarda en un fichero
