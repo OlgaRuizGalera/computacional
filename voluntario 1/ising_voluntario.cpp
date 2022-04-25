@@ -19,27 +19,14 @@ int main (void)
     N=100; 
     T=4.5;
 
-    /*Configuracion desordenada*/
-    for (i=0; i<N; i++)
-    {
-        for (j=0; j<N; j++)
-        {
-            s[i][j]=rand()%2;
-            if(s[i][j]==0)
-            {
-                s[i][j]=-1;
-            }
-        }
-    }
-
-    /* Configuracion ordenada
+    /* Configuracion ordenada*/
     for (i=0; i<N; i++)
     {
         for (j=0; j<N; j++)
         {
             s[i][j]=1;
         }
-    }*/
+    }
 
     ising.open ("ising_desordenado.dat");
 
@@ -54,7 +41,7 @@ int main (void)
         }
     ising<<endl;
 
-    for (o=0; o<200; o++)
+    for (o=0; o<1000000; o++)
     {
         for (y=0; y<N*N; y++)
         {
@@ -129,6 +116,13 @@ int main (void)
     }
     ising.close ();
     return 0;
+
+    /* Cda 100 pasos montecarlo realizo promedio
+    Usar un contador que cuando llegue a 100 realice los promedios*/
+    /* Ir acumulando los valores de los promedios que piden dentro del bucle hasta N*N
+    aqui fuera llamar a las funciones que calculan los promedios 
+    (suma acumulada entre el numero de iteraciones)
+    o bien calcularlo del tiron*/
 }
 
 
@@ -143,3 +137,11 @@ void minimo (double T, double E, double& p)
     else p=1.0;
     return;
 }
+
+void magnetizacion ()
+
+void energia ()
+
+void calor ()
+
+void correlacion ()
