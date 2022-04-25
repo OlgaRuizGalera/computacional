@@ -11,12 +11,12 @@ using namespace std;
 
 int main (void) 
 {
-    int i, j, n, m, o, k, l, N, y, s[10][10];
+    int i, j, n, m, o, k, l, N, y, s[100][100];
     double p, f, T, E;
     ofstream ising;
 
     srand(time(NULL));
-    N=10; 
+    N=100; 
     T=4.5;
 
     /*Configuracion desordenada*/
@@ -41,7 +41,7 @@ int main (void)
         }
     }*/
 
-    ising.open ("ising_ordenado.dat");
+    ising.open ("ising_desordenado.dat");
 
     for (k=0; k<N; k++)
         {
