@@ -11,12 +11,12 @@ using namespace std;
 
 int main (void) 
 {
-    int i, j, n, m, o, k, l, N, y, s[100][100];
+    int i, j, n, m, o, k, l, N, y, s[10][10];
     double p, f, T, E;
     ofstream ising;
 
     srand(time(NULL));
-    N=100; 
+    N=10; 
     T=4.5;
 
     /*Configuracion desordenada*/
@@ -41,7 +41,18 @@ int main (void)
         }
     }*/
 
-    ising.open ("ising_desordenado.dat");
+    ising.open ("ising_ordenado.dat");
+
+    for (k=0; k<N; k++)
+        {
+            for (l=0; l<N-1; l++)
+            {
+                ising<<s[k][l]<<",";
+            }
+            ising<<s[k][N-1];
+            ising<<endl;
+        }
+    ising<<endl;
 
     for (o=0; o<200; o++)
     {
@@ -51,13 +62,13 @@ int main (void)
             n=rand()%N;
             m=rand()%N;
 
-            if (n+1>N)
+            if (n+1==N)
             {
                 if (m==0)
                 {
                     E=2.0*s[n][m]*(s[0][m]+s[n-1][m]+s[n][m+1]+s[n][N-1]);
                 }
-                else if (m+1>N)
+                else if (m+1==N)
                 {
                     E=2.0*s[n][m]*(s[0][m]+s[n-1][m]+s[n][0]+s[n][m-1]);
                 }
@@ -72,7 +83,7 @@ int main (void)
                 {
                     E=2.0*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][m+1]+s[n][N-1]);
                 }
-                else if (m+1>N)
+                else if (m+1==N)
                 {   
                     E=2.0*s[n][m]*(s[n+1][m]+s[N-1][m]+s[n][0]+s[n][m-1]);
                 }
@@ -87,7 +98,7 @@ int main (void)
                 {
                     E=2.0*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][m+1]+s[n][N-1]);
                 }
-                else if (m+1>N)
+                else if (m+1==N)
                 {
                     E=2.0*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][0]+s[n][m-1]);
                 }   
