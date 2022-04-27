@@ -7,6 +7,7 @@
 
 void minimo (double T, double E, double& p);
 void magnetizacion (double mag[10000], int N, int s[100][100], int b);
+void promedio (double& prom, double var[10000], int b);
 
 using namespace std;
 
@@ -14,6 +15,7 @@ int main (void)
 {
     int i, j, n, m, o, k, l, N, y, b, h, s[100][100];
     double p, f, T, E, c, e[10000], cor, mag[10000], r[10000];
+    double promE, promr;
     ofstream ising;
 
     srand(time(NULL));
@@ -118,8 +120,7 @@ int main (void)
         ising<<endl;
         h=h+1;
         if(h==100)
-        {
-            magnetizacion (mag, N, s, b);
+        {        
             e[b]=E;
             r[b]=E*E;
             b=b+1;
@@ -128,6 +129,11 @@ int main (void)
         
     }
     ising.close ();
+    
+    /* Aqui va el calculo de promedios y de errores asi como el calculo final de las magnitudes*/
+    promedio (promE, e, b);
+    promedio (promr, r, b);
+    
     return 0;
 }
 
@@ -156,4 +162,17 @@ void magnetizacion (double mag[10000], int N, int s[100][100], int b)
         }
     }
     mag[b]=abs(m)/(N*N);
+    return;
+}
+
+void promedio (double& prom, double var[10000], int b)
+{
+    int i;
+    for (i=0; i<b; i++)
+    {
+        prom=prom+var[i];
+    }
+    prom=prom/b;
+    return;
+
 }
