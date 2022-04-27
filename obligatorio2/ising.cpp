@@ -19,7 +19,7 @@ int main (void)
     N=100; 
     T=4.5;
 
-    /*Configuracion desordenada*/
+    /*Configuracion desordenada
     for (i=0; i<N; i++)
     {
         for (j=0; j<N; j++)
@@ -30,18 +30,18 @@ int main (void)
                 s[i][j]=-1;
             }
         }
-    }
+    }*/
 
-    /* Configuracion ordenada
+    /* Configuracion ordenada*/
     for (i=0; i<N; i++)
     {
         for (j=0; j<N; j++)
         {
             s[i][j]=1;
         }
-    }*/
+    }
 
-    ising.open ("ising_desordenado.dat");
+    ising.open ("ising_ordenado.dat");
 
     for (k=0; k<N; k++)
         {
@@ -107,7 +107,6 @@ int main (void)
                     E=2.0*s[n][m]*(s[n+1][m]+s[n-1][m]+s[n][m+1]+s[n][m-1]);
                 }
             }
-
 
             minimo(T, E, p);
             f=rand()/(RAND_MAX*1.0);
