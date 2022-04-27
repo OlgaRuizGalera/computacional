@@ -6,18 +6,20 @@
 #include <ctime>
 
 void minimo (double T, double E, double& p);
+void magnetizacion (double& mag, int N, int s[100][100]);
 
 using namespace std;
 
 int main (void) 
 {
-    int i, j, n, m, o, k, l, N, y, s[100][100];
-    double p, f, T, E;
+    int i, j, n, m, o, k, l, N, y, h, s[100][100];
+    double p, f, T, E, c, e, cor, mag;
     ofstream ising;
 
     srand(time(NULL));
     N=100; 
     T=4.5;
+    h=0;
 
     /* Configuracion ordenada*/
     for (i=0; i<N; i++)
@@ -28,7 +30,7 @@ int main (void)
         }
     }
 
-    ising.open ("ising_desordenado.dat");
+    ising.open ("voluntario.dat");
 
     for (k=0; k<N; k++)
         {
@@ -113,6 +115,14 @@ int main (void)
             ising<<endl;
         }
         ising<<endl;
+        h=h+1;
+        if(h==100)
+        {
+            magnetizacion ();
+            e=e+E;
+            c=c+e*e;
+            correlacion ();
+        }
     }
     ising.close ();
     return 0;
@@ -138,10 +148,12 @@ void minimo (double T, double E, double& p)
     return;
 }
 
-void magnetizacion ()
-
-void energia ()
-
-void calor ()
+void magnetizacion (double& mag, int N, int s[100][100])
+{
+    
+}
 
 void correlacion ()
+{
+
+}
