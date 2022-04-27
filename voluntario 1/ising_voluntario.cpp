@@ -17,6 +17,7 @@ int main (void)
     int i, j, n, m, o, k, l, N, y, b, h, s[100][100];
     double p, f, T, E, c, e[10000], cor, mag[10000], r[10000];
     double promE, promr, promm, errorE, errorr, errorm;
+    double ener, cal;
     ofstream ising;
 
     srand(time(NULL));
@@ -151,7 +152,10 @@ int main (void)
     error (b, errorm, mag, promm);
 
     /*Calculo las magnitudes y los errores multiplicando por las constantes necesarias*/
-    
+    /*La magnetizacion es directamente el promedio de m, promm*/
+    /*ESCRIBIR EN FICHERO Y CALCULAR LA F*/
+    ener=promE/(2*N*N);
+    cal=(promr-promE*promE)/(T*N*N);
     
     return 0;
 }
