@@ -6,20 +6,21 @@
 #include <ctime>
 
 void minimo (double T, double E, double& p);
-void magnetizacion (double& mag, int N, int s[100][100]);
+void magnetizacion (double mag[10000], int N, int s[100][100], int b);
 
 using namespace std;
 
 int main (void) 
 {
-    int i, j, n, m, o, k, l, N, y, h, s[100][100];
-    double p, f, T, E, c, e, cor, mag;
+    int i, j, n, m, o, k, l, N, y, b, h, s[100][100];
+    double p, f, T, E, c, e[10000], cor, mag[10000], r[10000];
     ofstream ising;
 
     srand(time(NULL));
     N=100; 
     T=4.5;
     h=0;
+    b=0;
 
     /* Configuracion ordenada*/
     for (i=0; i<N; i++)
@@ -118,21 +119,16 @@ int main (void)
         h=h+1;
         if(h==100)
         {
-            magnetizacion ();
-            e=e+E;
-            c=c+e*e;
-            correlacion ();
+            magnetizacion (mag, N, s, b);
+            e[b]=E;
+            r[b]=E*E;
+            b=b+1;
+            h=0;
         }
+        
     }
     ising.close ();
     return 0;
-
-    /* Cda 100 pasos montecarlo realizo promedio
-    Usar un contador que cuando llegue a 100 realice los promedios*/
-    /* Ir acumulando los valores de los promedios que piden dentro del bucle hasta N*N
-    aqui fuera llamar a las funciones que calculan los promedios 
-    (suma acumulada entre el numero de iteraciones)
-    o bien calcularlo del tiron*/
 }
 
 
@@ -148,12 +144,16 @@ void minimo (double T, double E, double& p)
     return;
 }
 
-void magnetizacion (double& mag, int N, int s[100][100])
+void magnetizacion (double mag[10000], int N, int s[100][100], int b)
 {
-    
-}
-
-void correlacion ()
-{
-
+    int i, j, m;
+    m=0;
+    for (i=0; i<N; i++)
+    {
+        for (j=0; j<N; j++)
+        {
+            m=m+s[i][j];
+        }
+    }
+    mag[b]=abs(m)/(N*N);
 }
