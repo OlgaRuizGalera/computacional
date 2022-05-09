@@ -12,17 +12,18 @@ int main (void)
 {
 
     int N, ncic, j, n, l, h;
-    double lamb, k0, s, V[1000], a, norma;
+    double lamb, k0, s, V[1000], a, norma, normadeto;
     complex<double> A0[1000], alfa[1000], beta[10000], b, x[1000], fo[1000], i, gamma[1000];
-    ofstream schrodinger;
+    ofstream schrodinger, fichero;
 
     schrodinger.open ("schrodinger.txt");
+    fichero.open ("norma.txt");
 
     /* Damos los valores iniciales a los datos que conocemos*/
     i=complex<double>(0.0,1.0);
     N=200;
     ncic=N/8;
-    lamb=0.3;
+    lamb=1.0;
 
     /*Doy valores iniciales evaluando con los parametros anteriores*/
     k0=2*PI*ncic/N;
@@ -43,16 +44,20 @@ int main (void)
     fo[0]=fo[N-1]=0.0;
     norma=norm(fo[0]);
     schrodinger<<0<<" , "<<norma<<" , "<<V[0]<<endl;
+    normadeto=0.0;
     for (j=1; j<N-1; j++)
     {
         a=exp(-8*(4*j-N)*(4*j-N)/(N*N));
         fo[j]=a*1.0*exp(i*k0*(j*1.0));
         norma=norm(fo[j]);
         schrodinger<<j<<" , "<<norma<<" , "<<V[j]<<endl;
+        normadeto=normadeto+norma;
     }
     norma=norm(fo[N-1]);
     schrodinger<<N-1<<" , "<<norma<<" , "<<V[N-1]<<endl;
     schrodinger<<endl;
+    normadeto=normadeto+norma;
+    fichero<<normadeto<<endl;
 
     /* Evaluo alfa*/
     /*A- es siempre 1 y A+ tambien asi que solo tengo que evaluar A0*/
@@ -90,13 +95,16 @@ int main (void)
     while (h<1000)
     {
         /*Evaluo la funcion de onda*/
+        normadeto=0.0;
        for (j=0; j<N; j++)
         {
             fo[j]=x[j]-fo[j];
             norma=norm(fo[j]);
             schrodinger<<j<<" , "<<norma<<" , "<<V[j]<<endl;
+            normadeto=normadeto+norma;
         } 
         schrodinger<<endl;
+        fichero<<normadeto<<endl;
 
         h=h+1;
 
@@ -118,5 +126,6 @@ int main (void)
     }
 
     schrodinger.close ();
+    fichero.close ();
     return 0;
 }
