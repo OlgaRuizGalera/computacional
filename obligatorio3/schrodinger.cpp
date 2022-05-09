@@ -11,7 +11,6 @@ using namespace std;
 int main (void) 
 {
 
-    
     int N, ncic, j, n, l, h;
     double lamb, k0, s, V[N], a;
     complex<double> A0[N], alfa[N], beta[N], b, x[N], fo[N], i, gamma[N];
@@ -20,8 +19,8 @@ int main (void)
     schrodinger.open ("schrodinger.txt");
 
     /* Damos los valores iniciales a los datos que conocemos*/
-    i=complex<double>(0,1);
-    N=1;
+    i=complex<double>(0.0,1.0);
+    N=10;
     ncic=1;
     lamb=1.;
 
@@ -41,22 +40,18 @@ int main (void)
     }
 
     /*Evaluamos la funcion de onda en todo j desde 0 hasta N usando las condiciones de contorno*/
-    /*Mirar bien que se evalue asi en N por la definicion de vectores*/
     fo[0]=fo[N-1]=0.0;
     schrodinger<<fo[0]<<",";
-    for (j=1; j<N-2; j++)
+    for (j=1; j<N-1; j++)
     {
         a=exp(-8*(4*j-N)*(4*j-N)/(N*N));
-        fo[j]=a*cos(k0*j)+i*a*sin(k0*j);
+        fo[j]=a*1.0*exp(i*k0*(j*1.0));
         schrodinger<<fo[j]<<",";
     }
-    a=exp(-8*(4*(N-1)-N)*(4*(N-1)-N)/(N*N));
-    fo[N-1]=a*cos(k0*(N-1))+i*a*sin(k0*(N-1));
-    schrodinger<<fo[j];
+    schrodinger<<fo[N-1];
     schrodinger<<endl;
 
     /* Evaluo alfa*/
-    /*Para evaluar alfa necesito evaluar primero las A y luego la gamma*/
     /*A- es siempre 1 y A+ tambien asi que solo tengo que evaluar A0*/
     /*Gamma y alfa se calculan en un mismo bucle*/
     for (j=0; j<N; j++)
@@ -65,7 +60,7 @@ int main (void)
     }
 
     alfa[N-2]=gamma[N-1]=0.0;
-    for (l=N-2; l=0; l--)
+    for (l=N-2; l=1; l--)
     {
         gamma[l]=A0[l]+alfa[l];
         alfa[l-1]=-gamma[l];
@@ -73,14 +68,14 @@ int main (void)
 
     /*Evaluo beta usando gamma y el valor inicial de beta*/
     beta[N-2]=0.0;
-    for (j=N-2; j=0; j--)
+    for (j=N-2; j=1; j--)
     {
         beta[j-1]=gamma[j]*(4.0*i*fo[j]/s);
     }
 
     /*Calculo x*/
     x[0]=0.0;
-    for (j=0; j<N; j++)
+    for (j=0; j<N-1; j++)
     {
         x[j+1]=alfa[j]*x[j]+beta[j];
     }
@@ -89,32 +84,30 @@ int main (void)
     al final del bucle tomo sumo 1 al contador*/
 
     h=0;
-    while (h<1000)
+    while (h<10)
     {
         /*Evaluo la funcion de onda*/
        for (j=0; j<N-1; j++)
         {
-            a=exp(-8*(4*j-N)*(4*j-N)/(N*N));
-            fo[j]=a*cos(k0*j)+i*a*sin(k0*j);
+            fo[j]=x[j]-fo[j];
             schrodinger<<fo[j]<<",";
         } 
-        a=exp(-8*(4*j-(N-1))*(4*(N-1)-N)/(N*N));
-        fo[N-1]=a*cos(k0*(N-1))+i*a*sin(k0*(N-1));
+        fo[N-1]=x[N-1]-fo[N-1];
         schrodinger<<fo[N-1];
         schrodinger<<endl;
 
-        n=n+1;
+        h=h+1;
 
         /*Evaluo beta usando gamma y el valor inicial de beta*/
         /*No tengo que evaluar el primero todo el rato porque siempre vale 0*/
-        for (j=N-2; j=0; j--)
+        for (j=N-2; j=1; j--)
         {
             beta[j-1]=gamma[j]*(4.0*i*fo[j]/s);
         }
 
         /*Calculo x*/
         x[0]=0.0;
-        for (j=0; j<N; j++)
+        for (j=0; j<N-2; j++)
         {
             x[j+1]=alfa[j]*x[j]+beta[j];
         }
