@@ -12,17 +12,17 @@ int main (void)
 {
 
     int N, ncic, j, n, l, h;
-    double lamb, k0, s, V[N], a;
-    complex<double> A0[N], alfa[N], beta[N], b, x[N], fo[N], i, gamma[N];
+    double lamb, k0, s, V[1000], a;
+    complex<double> A0[1000], alfa[1000], beta[10000], b, x[1000], fo[1000], i, gamma[1000];
     ofstream schrodinger;
 
     schrodinger.open ("schrodinger.txt");
 
     /* Damos los valores iniciales a los datos que conocemos*/
     i=complex<double>(0.0,1.0);
-    N=10;
-    ncic=1;
-    lamb=1.;
+    N=200;
+    ncic=N/8;
+    lamb=1.0;
 
     /*Doy valores iniciales evaluando con los parametros anteriores*/
     k0=2*PI*ncic/N;
@@ -60,17 +60,17 @@ int main (void)
     }
 
     alfa[N-2]=gamma[N-1]=0.0;
-    for (l=N-2; l=1; l--)
+    for (l=N-2; l>0; l--)
     {
         gamma[l]=A0[l]+alfa[l];
-        alfa[l-1]=-gamma[l];
+        alfa[l-1]=-1.0/gamma[l];
     }
 
     /*Evaluo beta usando gamma y el valor inicial de beta*/
     beta[N-2]=0.0;
-    for (j=N-2; j=1; j--)
+    for (j=N-2; j>0; j--)
     {
-        beta[j-1]=gamma[j]*(4.0*i*fo[j]/s);
+        beta[j-1]=(1.0/gamma[j])*(4.0*i*fo[j]/s-beta[j]);
     }
 
     /*Calculo x*/
@@ -84,7 +84,7 @@ int main (void)
     al final del bucle tomo sumo 1 al contador*/
 
     h=0;
-    while (h<10)
+    while (h<1000)
     {
         /*Evaluo la funcion de onda*/
        for (j=0; j<N-1; j++)
@@ -100,9 +100,9 @@ int main (void)
 
         /*Evaluo beta usando gamma y el valor inicial de beta*/
         /*No tengo que evaluar el primero todo el rato porque siempre vale 0*/
-        for (j=N-2; j=1; j--)
+        for (j=N-2; j>0; j--)
         {
-            beta[j-1]=gamma[j]*(4.0*i*fo[j]/s);
+            beta[j-1]=(1.0/gamma[j])*(4.0*i*fo[j]/s-beta[j]);
         }
 
         /*Calculo x*/
