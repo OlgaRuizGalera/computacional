@@ -12,7 +12,7 @@ int main (void)
 {
 
     int N, ncic, j, n, l, h;
-    double lamb, k0, s, V[1000], a;
+    double lamb, k0, s, V[1000], a, norma;
     complex<double> A0[1000], alfa[1000], beta[10000], b, x[1000], fo[1000], i, gamma[1000];
     ofstream schrodinger;
 
@@ -22,7 +22,7 @@ int main (void)
     i=complex<double>(0.0,1.0);
     N=200;
     ncic=N/8;
-    lamb=1.0;
+    lamb=0.3;
 
     /*Doy valores iniciales evaluando con los parametros anteriores*/
     k0=2*PI*ncic/N;
@@ -41,14 +41,17 @@ int main (void)
 
     /*Evaluamos la funcion de onda en todo j desde 0 hasta N usando las condiciones de contorno*/
     fo[0]=fo[N-1]=0.0;
-    schrodinger<<fo[0]<<",";
+    norma=norm(fo[0]);
+    schrodinger<<0<<" , "<<norma<<" , "<<V[0]<<endl;
     for (j=1; j<N-1; j++)
     {
         a=exp(-8*(4*j-N)*(4*j-N)/(N*N));
         fo[j]=a*1.0*exp(i*k0*(j*1.0));
-        schrodinger<<fo[j]<<",";
+        norma=norm(fo[j]);
+        schrodinger<<j<<" , "<<norma<<" , "<<V[j]<<endl;
     }
-    schrodinger<<fo[N-1];
+    norma=norm(fo[N-1]);
+    schrodinger<<N-1<<" , "<<norma<<" , "<<V[N-1]<<endl;
     schrodinger<<endl;
 
     /* Evaluo alfa*/
@@ -87,13 +90,12 @@ int main (void)
     while (h<1000)
     {
         /*Evaluo la funcion de onda*/
-       for (j=0; j<N-1; j++)
+       for (j=0; j<N; j++)
         {
             fo[j]=x[j]-fo[j];
-            schrodinger<<fo[j]<<",";
+            norma=norm(fo[j]);
+            schrodinger<<j<<" , "<<norma<<" , "<<V[j]<<endl;
         } 
-        fo[N-1]=x[N-1]-fo[N-1];
-        schrodinger<<fo[N-1];
         schrodinger<<endl;
 
         h=h+1;
