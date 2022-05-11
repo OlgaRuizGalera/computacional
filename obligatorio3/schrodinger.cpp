@@ -23,7 +23,7 @@ int main (void)
     i=complex<double>(0.0,1.0);
     N=200;
     ncic=N/8;
-    lamb=100.0;
+    lamb=0.3;
     h=0;
 
     /*Doy valores iniciales evaluando con los parametros anteriores*/
