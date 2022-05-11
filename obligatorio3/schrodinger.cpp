@@ -23,7 +23,8 @@ int main (void)
     i=complex<double>(0.0,1.0);
     N=200;
     ncic=N/8;
-    lamb=1.0;
+    lamb=100.0;
+    h=0;
 
     /*Doy valores iniciales evaluando con los parametros anteriores*/
     k0=2.0*PI*(1.0*ncic)/(1.0*N);
@@ -57,7 +58,7 @@ int main (void)
     schrodinger<<N-1<<" , "<<norma<<" , "<<V[N-1]<<endl;
     schrodinger<<endl;
     normadeto=normadeto+norma;
-    fichero<<normadeto<<endl;
+    fichero<<h<<" "<<normadeto/22.1557<<endl;
 
     /* Evaluo alfa*/
     /*A- es siempre 1 y A+ tambien asi que solo tengo que evaluar A0*/
@@ -91,7 +92,7 @@ int main (void)
     /*Empiezo bucle evaluando la funcion de onda y vuelvo a calcular el resto de parametros
     al final del bucle tomo sumo 1 al contador*/
 
-    h=0;
+    h=h+1;
     while (h<1000)
     {
         /*Evaluo la funcion de onda*/
@@ -104,7 +105,7 @@ int main (void)
             normadeto=normadeto+norma;
         } 
         schrodinger<<endl;
-        fichero<<normadeto<<endl;
+        fichero<<h<<" "<<normadeto/22.1557<<endl;
 
         h=h+1;
 
