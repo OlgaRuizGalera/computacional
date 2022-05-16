@@ -48,12 +48,11 @@ int main (void)
     o=0;
     while (t<=300000)
     {
-
         coordenadar(r1, pr3);
         coordenadaphi(phi1, r3, pphi3);
         momentophi (pphi1, r3, phi3, t, tri, mu);
-        momentor (pr1, pphi3, r3, phi3, t, tri, mu); 
-
+        momentor (pr1, pphi3, r3, phi3, t, tri, mu);
+       
        /*Cohete*/
         k1[0]=h*r1;
         k1[1]=h*phi1;
@@ -135,7 +134,7 @@ void coordenadaphi (double& phi, double pphi, double r)
 void momentor (double& pr, double pphi, double r, double phi, double t, double tri, double mu)
 {
     double rprima;
-    rprima=sqrt(1+r*r-2.0*r*cos(phi-w*t));
+    rprima=sqrt(1.0+r*r-2.0*r*cos(phi-w*t));
     pr=(pphi*pphi/(r*r*r)-tri*(1/(r*r)+mu/(rprima*rprima*rprima)*(r-cos(phi-w*t))));
     return;
 }
