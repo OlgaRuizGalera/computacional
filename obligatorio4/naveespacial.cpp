@@ -9,7 +9,7 @@
 #define w 2.6617e-6
 #define RT 6.378160e6
 #define RL 1.7374e6
-#define h 0.1
+#define h 1.0
 
 void coordenadar (double& r, double pr);
 void coordenadaphi (double& phi, double pphi, double r);
@@ -20,86 +20,93 @@ using namespace std;
 
 int main (void)
 {
-    double k13[4], k23[4], k33[4], k43[4];
-    double phi1, r1;
+    double k1[4], k2[4], k3[4], k4[4];
     double phi3, r3, pphi3,  pr3;
-    double t, tri, mu, rot;
+    double phi1, r1, pphi1, pr1;
+    double t, tri, mu;
     int o, i;
     ofstream fichero;
+    ofstream a;
     
     /*Las variables que estan junto al tiempo son las que sirven para reescalar*/
 
     tri=G*MT/(dtl*dtl*dtl);
     mu=ML/MT;
-    rot=1.0;
     
-    
-    /*Doy valores iniciales*/
-    /*Tierra*/
-    phi1=0.0;
-    r1=0.0;
 
     /*Cohete*/
-    phi3=1.0;
-    pphi3=1.0;
-    r3=1.0;
-    pr3=1.0;
+    phi3=0.0;
+    r3=6.37816e6/dtl;
+    pphi3=r3*11.19e3*sin(0.259)/dtl;
+    pr3=11.19e3*cos(0.259)/dtl;
 
-    t=0;
+    t=0.0;
 
     fichero.open ("cohete.dat");
+    a.open ("prueba.dat");
 
     o=0;
     while (t<=300000)
     {
+
+        coordenadar(r1, pr3);
+        coordenadaphi(phi1, r3, pphi3);
+        momentophi (pphi1, r3, phi3, t, tri, mu);
+        momentor (pr1, pphi3, r3, phi3, t, tri, mu); 
+
        /*Cohete*/
-        k13[0]=h*r3;
-        k13[1]=h*phi3;
-        k13[2]=h*pphi3;
-        k13[3]=h*pr3;
+        k1[0]=h*r1;
+        k1[1]=h*phi1;
+        k1[2]=h*pphi1;
+        k1[3]=h*pr1;
+        a<<k1[0]<<","<<k1[1]<<","<<k1[2]<<","<<k1[3]<<endl;
         
-        coordenadar(r3, pr3+k13[3]/2);
-        coordenadaphi(phi3, r3+k13[0]/2, pphi3+k13[2]/2);
-        momentophi (pphi3, r3+k13[0]/2, phi3+k13[1]/2, t+h/2, tri, mu);
-        momentor (pr3, pphi3+k13[2]/2, r3+k13[0]/2, phi3+k13[1]/2, t+h/2, tri, mu);
+        coordenadar(r1, pr3+k1[3]/2.0);
+        coordenadaphi(phi1, r3+k1[0]/2.0, pphi3+k1[2]/2.0);
+        momentophi (pphi1, r3+k1[0]/2.0, phi3+k1[1]/2.0, t+h/2.0, tri, mu);
+        momentor (pr1, pphi3+k1[2]/2.0, r3+k1[0]/2.0, phi3+k1[1]/2.0, t+h/2.0, tri, mu);
 
-        k23[0]=h*r3;
-        k23[1]=h*phi3;
-        k23[2]=h*pphi3;
-        k23[3]=h*pr3;
+        k2[0]=h*r1;
+        k2[1]=h*phi1;
+        k2[2]=h*pphi1;
+        k2[3]=h*pr1;
+        a<<k2[0]<<","<<k2[1]<<","<<k2[2]<<","<<k2[3]<<endl;
 
-        coordenadar(r3, pr3+k23[3]/2);
-        coordenadaphi(phi3, r3+k23[0]/2, pphi3+k23[2]/2);
-        momentophi (pphi3, r3+k23[0]/2, phi3+k23[1]/2, t+h/2, tri, mu);
-        momentor (pr3, pphi3+k23[2]/2, r3+k23[0]/2, phi3+k23[1]/2, t+h/2, tri, mu);
+        coordenadar(r1, pr3+k2[3]/2.0);
+        coordenadaphi(phi1, r3+k2[0]/2.0, pphi3+k2[2]/2.0);
+        momentophi (pphi1, r3+k2[0]/2.0, phi3+k2[1]/2.0, t+h/2.0, tri, mu);
+        momentor (pr1, pphi3+k2[2]/2.0, r3+k2[0]/2.0, phi3+k2[1]/2.0, t+h/2.0, tri, mu);
 
-        k33[0]=h*r3;
-        k33[1]=h*phi3;
-        k33[2]=h*pphi3;
-        k33[3]=h*pr3;
+        k3[0]=h*r1;
+        k3[1]=h*phi1;
+        k3[2]=h*pphi1;
+        k3[3]=h*pr1;
+        a<<k3[0]<<","<<k3[1]<<","<<k3[2]<<","<<k3[3]<<endl;
 
-        coordenadar(r3, pr3+k33[3]);
-        coordenadaphi(phi3, r3+k33[0], pphi3+k33[2]);
-        momentophi (pphi3, r3+k33[0], phi3+k33[1], t+h, tri, mu);
-        momentor (pr3, pphi3+k33[2], r3+k33[0], phi3+k33[1], t+h, tri, mu);
+        coordenadar(r1, pr3+k3[3]);
+        coordenadaphi(phi1, r3+k3[0], pphi3+k3[2]);
+        momentophi (pphi1, r3+k3[0], phi3+k3[1], t+h, tri, mu);
+        momentor (pr1, pphi3+k3[2], r3+k3[0], phi3+k3[1], t+h, tri, mu);
 
-        k43[0]=h*r3;
-        k43[1]=h*phi3;
-        k43[2]=h*pphi3;
-        k43[3]=h*pr3;
+        k4[0]=h*r1;
+        k4[1]=h*phi1;
+        k4[2]=h*pphi1;
+        k4[3]=h*pr1;
+        a<<k4[0]<<","<<k4[1]<<","<<k4[2]<<","<<k4[3]<<endl;
+        a<<endl;
 
-        r3=r3+(1.0/6.0)*(k13[0]+2.0*k23[0]+2*k33[0]+k43[0]);
-        phi3=phi3+(1.0/6.0)*(k13[1]+2.0*k23[1]+2*k33[1]+k43[1]);
-        pphi3=pphi3+(1.0/6.0)*(k13[2]+2.0*k23[2]+2*k33[2]+k43[2]);
-        pr3=pr3+(1.0/6.0)*(k13[3]+2.0*k23[3]+2*k33[3]+k43[3]);
+        r3=r3+(1.0/6.0)*(k1[0]+2.0*k2[0]+2.0*k3[0]+k4[0]);
+        phi3=phi3+(1.0/6.0)*(k1[1]+2.0*k2[1]+2.0*k3[1]+k4[1]);
+        pphi3=pphi3+(1.0/6.0)*(k1[2]+2.0*k2[2]+2.0*k3[2]+k4[2]);
+        pr3=pr3+(1.0/6.0)*(k1[3]+2.0*k2[3]+2.0*k3[3]+k4[3]);
         
         o=o+1;
-        t=t+1;
+        t=t+1.0;
 
-        if(o==1000)
+        if(o==500)
         {
-            fichero<<r1*cos(phi1)<<","<<r1*sin(phi1)<<endl;
-            fichero<<dtl*cos(rot*i)<<","<<dtl*sin(rot*i)<<endl;
+            fichero<<0.0<<","<<0.0<<endl;
+            fichero<<cos(w*t)<<","<<sin(w*t)<<endl;
             fichero<<r3*cos(phi3)<<","<<r3*sin(phi3)<<endl;
             fichero<<endl;
             o=0;
@@ -108,6 +115,7 @@ int main (void)
         
     }
     fichero.close();
+    a.close();
     return 0;
 
 }
@@ -127,7 +135,7 @@ void coordenadaphi (double& phi, double pphi, double r)
 void momentor (double& pr, double pphi, double r, double phi, double t, double tri, double mu)
 {
     double rprima;
-    rprima=sqrt(1+r*r-2*r*cos(phi-w*t));
+    rprima=sqrt(1+r*r-2.0*r*cos(phi-w*t));
     pr=(pphi*pphi/(r*r*r)-tri*(1/(r*r)+mu/(rprima*rprima*rprima)*(r-cos(phi-w*t))));
     return;
 }
@@ -135,7 +143,7 @@ void momentor (double& pr, double pphi, double r, double phi, double t, double t
 void momentophi (double& pphi, double r, double phi, double t, double tri, double mu)
 {
     double rprima2;
-    rprima2=sqrt(1+r*r-2*r*cos(phi-w*t));
+    rprima2=sqrt(1+r*r-2.0*r*cos(phi-w*t));
     pphi=(-tri*mu*r/(rprima2*rprima2*rprima2))*sin(phi-w*t);
     return;
 }
