@@ -48,7 +48,7 @@ import numpy as np
 # Parámetros
 # ========================================
 file_in = "cohete.dat" # Nombre del fichero de datos
-file_out = "planetas" # Nombre del fichero de salida (sin extensión)
+file_out = "cohete" # Nombre del fichero de salida (sin extensión)
 
 # Límites de los ejes X e Y
 x_min = -1.5
