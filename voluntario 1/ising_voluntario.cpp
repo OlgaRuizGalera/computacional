@@ -10,18 +10,17 @@ void magnetizacion (double mag[], int N, int s[100][100], int b);
 void promedio (double& prom, double var[], int b);
 void error (int b, double& error, double varia[10000], double prom);
 double energiaparaelpromedio (double Epalpromedio, int n, int m, int N, int s[100][100]);
+double funcioncorrelacion (int N, int i, int s[1000][1000]);
 
 using namespace std;
 
 int main (void) 
 {
     int i, j, n, m, o, k, l, N, y, b, h, s[100][100];
-    double p, f, T, E, c, e[10000], cor, mag[10000], r[10000];
+    double p, f, T, E, c, e[10000], cor[10000], mag[10000], r[10000];
     double promE, promr, promm, errorE, errorr, errorm, Epalpromedio, Epalpromedio1;
-    double ener, cal;
-    ofstream ising;
+    double ener, cal, coraux, errorenergia, errorcalor;
     ofstream valores;
- /*Falta funcion de correlacion*/
 
     srand(time(NULL));
     N=16; 
@@ -38,22 +37,7 @@ int main (void)
         }
     }
 
-    ising.open ("voluntario.dat");
     valores.open ("valores.dat");
-
-
- /*Escribo los primeros valores en el fichero*/
-    for (k=0; k<N; k++)
-    {
-        for (l=0; l<N-1; l++)
-        {
-            ising<<s[k][l]<<",";
-        }
-        ising<<s[k][N-1];
-        ising<<endl;
-    }
-    ising<<endl;
-
 
     for (o=0; o<1000000; o++)
     {
@@ -63,7 +47,6 @@ int main (void)
             n=rand()%N;
             m=rand()%N;
  
- /*Calculo la energia segun simetria*/
             if (n+1==N)
             {
                 if (m==0)
@@ -118,18 +101,6 @@ int main (void)
             }
         }
 
- /*Escribo en el fichero los valores de spin por cada pM*/
-        for (k=0; k<N; k++)
-        {
-            for (l=0; l<N-1; l++)
-            {
-                ising<<s[k][l]<<",";
-            }
-            ising<<s[k][N-1];
-            ising<<endl;
-        }
-        ising<<endl;
-
  /*Aumento en 1 h que es contador para cuando llegue a 100 pM
  Compruebo si ha llegado o no a 100 para contribuir al calculo de promedios*/
         h=h+1;
@@ -137,7 +108,6 @@ int main (void)
         { 
 
             magnetizacion (mag, N, s, b);
- /*Voy a calcular la energia pero de nuevo teniendo en cuenta la simetria y todo eso*/
             Epalpromedio1=0.0;
             for (n=0; n<N; n++)
             {
@@ -147,43 +117,45 @@ int main (void)
                     Epalpromedio1=Epalpromedio1+Epalpromedio;
                 }
             }
- 
             e[b]=Epalpromedio1*1.0;
             r[b]=Epalpromedio1*Epalpromedio1*1.0;
+            for (i=0; i<N; i++)
+            {
+                coraux=funcioncorrelacion(N,i,s);
+                cor[i]=cor[i]+coraux;
+            }
             b=b+1;
- /*Falta la funcion de correlacion pero no la entiendo*/
             h=0;
         }
  
     }
-
-    ising.close ();
-
- /* Calculo de promedios y errores de la energia*/
- /*ME FALTA LA F*/
  
     promedio (promE, e, b);
     promedio (promr, r, b);
     promedio (promm, mag, b);
+    for (i=0; i<N; i++)
+    {
+        cor[i]=cor[i]/(N*N*10000);
+    }
     error (b, errorE, e, promE);
     error (b, errorr, r, promr);
     error (b, errorm, mag, promm);
 
- /*Calculo las magnitudes y los errores multiplicando por las constantes necesarias*/
- /*La magnetizacion es directamente el promedio de m, promm*/
- /*ESCRIBIR EN FICHERO Y CALCULAR LA F*/
+    errorenergia=errorE/(2*N*N);
+    errorcalor=sqrt(pow(errorr/(T*N*N),2)+pow(2*errorE/(T*N*N),2));
+
     ener=promE/(2.0*N*N);
     cal=(promr-promE*promE)/(T*N*N*1.0);
 
- /*Calcular los errores por derivadas y eso*/
-
     valores<<"Magnetización: "<<promm<<endl;
+    valores<<"Error magnetizacion: "<<errorm<<endl;
     valores<<"Energia: "<<ener<<endl;
+    valores<<"Error energia: "<<errorenergia<<endl;
     valores<<"Calor especifico: "<<cal<<endl;
+    valores<<"Error calor especifico: "<<errorcalor<<endl;
 
     valores.close ();
 
- 
     return 0;
 }
 
@@ -292,4 +264,19 @@ double energiaparaelpromedio (double Epalpromedio, int n, int m, int N, int s[10
     }
     return Epalpromedio;
 
+}
+
+double funcioncorrelacion (int N, int i, int s[100][100])
+{
+    int n, m;
+    double correlacion;
+    correlacion=0.0;
+    for (n=0; n<N; n++)
+    {
+        for (m=0; m<N; m++)
+        {
+            correlacion=correlacion+s[n][m]*s[n+i][m];
+        }
+    }
+    return correlacion;
 }
