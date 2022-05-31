@@ -19,7 +19,7 @@ int main (void)
     int i, j, n, m, o, k, l, N, y, b, h, s[100][100];
     double p, f, T, E, c, e[10000], cor[10000], mag[10000], r[10000];
     double promE, promr, promm, errorE, errorr, errorm, Epalpromedio, Epalpromedio1;
-    double ener, cal, coraux, errorenergia, errorcalor;
+    double ener, cal, coraux, errorenergia, errorcalor, errorcor[10000];
     ofstream valores;
 
     srand(time(NULL));
