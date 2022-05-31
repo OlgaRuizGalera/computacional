@@ -154,6 +154,12 @@ int main (void)
     valores<<"Calor especifico: "<<cal<<endl;
     valores<<"Error calor especifico: "<<errorcalor<<endl;
 
+    for (j=0; j<N; j++)
+    {
+        valores<<"Funcion correlacion "<<j<<" : "<<cor[j]<<endl;
+        valores<<"Error de la funcion correlacion "<<j<<" : "<<endl;
+    }
+
     valores.close ();
 
     return 0;
