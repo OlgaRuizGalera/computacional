@@ -17,14 +17,15 @@ using namespace std;
 int main (void) 
 {
 
-    int N, ncic, j, n, l, h;
-    double lamb, k0, s, V[1000], a, norma[1000], normadeto, prob[1000];
+    int N, ncic, j, n, l, h, t, nd, z;
+    double lamb, k0, s, V[1000], a, norma[1000], normadeto, prob, prob2;
     complex<double> A0[1000], alfa[1000], beta[10000], b, x[1000], fo[1000], i, gamma[1000];
-    ofstream schrodinger, fichero, probabilidad;
+    ofstream schrodinger, fichero, probabilidad, probabilidad2;
 
     schrodinger.open ("schrodinger.txt");
     fichero.open ("norma.txt");
-    probabilidad.open ("probabilidad.dat");
+    /*probabilidad.open ("probabilidad.dat");*/
+    probabilidad2.open ("probabilidad_drch.dat");
 
     /* Damos los valores iniciales a los datos que conocemos*/
     i=complex<double>(0.0,1.0);
@@ -100,9 +101,12 @@ int main (void)
     al final del bucle tomo sumo 1 al contador*/
 
     h=h+1;
-
+    t=0;
+    nd=279;
+    z=0;
+    /*prob2=0.0;*/
     /*ESte primer bucle es para buscar el maximo local de la probabilidad*/
-    while (h<100)
+    while (h<500)
     {
         /*Evaluo la funcion de onda*/
         normadeto=0.0;
@@ -118,13 +122,32 @@ int main (void)
 
         /*Evalua aqui la probabilidad de encontrar la particula a la derecha*/
         /*La probabilidad la mido con h-1 porque el bucle empieza con h=1*/
-        prob[h-1]=0.0;
-        for (j=4*N/5; j<N+1; j++)
-        {
-            prob[h-1]=prob[h-1]+norma[j]*norma[j];
-        }
-        probabilidad<<h<<" , "<< prob[h-1] << endl;
+        
 
+        prob=0.0;
+        if(t==nd)
+        {
+            for (j=4*N/5; j<N+1; j++)
+            {
+                prob=prob+norma[j]*norma[j];
+            } 
+            probabilidad2<<h<<" , "<< prob << endl;
+            z=z+1; 
+        }
+        /*Esto sirve para buscar el maximo de la probabilidad y ya se ha hecho el estudio
+        se da para t=279 para los valores iniciales N=200, lamb=0.3*/
+        /*for (j=4*N/5; j<N+1; j++)
+        {
+            prob=prob+norma[j]*norma[j];
+        }
+        
+        if(prob>prob2)
+        {
+            prob2=prob;
+            t=h;
+        }
+        probabilidad<<h<<" , "<< prob << endl;*/
+        
         h=h+1;
 
         /*Evaluo beta usando gamma y el valor inicial de beta*/
@@ -141,34 +164,22 @@ int main (void)
             x[j+1]=alfa[j]*x[j]+beta[j];
         }
 
+        t=t+1;
 
     }
+
+    
+    /*probabilidad<<endl;
+    probabilidad<<"----------------------------"<<endl;
+    probabilidad<<"El maximo es: "<<prob2<<endl;
+    probabilidad<<"Se da para: "<< t;*/
 
     /*Busco el maximo local de la probabilidad de encontrar la particula a la derecha*/
 
 
     schrodinger.close ();
     fichero.close ();
-    probabilidad.close();
+    /*probabilidad.close();*/
+    probabilidad2.close();
     return 0;
-}
-
-/*Funcion que recorre todas las probabilidades calculadas y elige la mayor
-Para la mayor me pasa el valor del tiempo que es el que debo conocer para luego hacer el bucle*/
-double probabilidadmax (double prob[1000], int h)
-{
-    int i, t;
-    double aux, td;
-    aux=0.0;
-    t=0;
-    for (i=0; i<h; i++)
-    {
-        if (prob[i]>aux)
-        {
-            aux=prob[i];
-            td=t;
-        }
-        t=t+1;
-    }
-    return td;
 }
