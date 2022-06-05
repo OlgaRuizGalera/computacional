@@ -20,12 +20,12 @@ using namespace std;
 int main (void) 
 {
 
-    int N, ncic, j, n, l, h, nd, z, k, m;
-    double lamb, k0, s, V[1000], a, norma[1000], prob, prob2, p;
+    int N, ncic, j, n, l, h, z, m;
+    double lamb, k0, s, V[1000], a, norma[1000], prob, p;
     complex<double> A0[1000], alfa[1000], beta[10000], b, x[1000], fo[1000], i, gamma[1000];
-    ofstream coeficiente, probabilidad, probabilidad2;
+    ofstream coeficiente,  probabilidad2;
 
-    probabilidad.open ("probabilidad.dat");
+    
     probabilidad2.open ("probabilidad_drch.dat");
     coeficiente.open ("coeficiente.dat");
     srand(time(NULL));
@@ -101,68 +101,9 @@ int main (void)
     /*ESte primer bucle es para buscar el maximo local de la probabilidad*/
     while (h<1000)
     {
-        k=0;
-        prob2=0.0;
-        while (k<500)
-        {
-            /*Evaluo la funcion de onda*/
-             
-            for (j=0; j<N; j++)
-            {
-                fo[j]=x[j]-fo[j];
-                norma[j]=norm(fo[j]);
-            } 
-
-            /*Evalua aqui la probabilidad de encontrar la particula a la derecha*/
-            /*La probabilidad la mido con h-1 porque el bucle empieza con h=1*/
-            prob=0.0;
-            for (j=4*N/5; j<N+1; j++)
-            {
-                prob=prob+norma[j]*norma[j];
-            }
-
-            if(prob>prob2)
-            {
-                prob2=prob;
-                nd=k;
-            }
-
-            /*Esta condicion esta para que no haga iteraciones de mas sin sentido
-            Asi puedo iniciar el siguiente bucle con los valores calculados de los parametros
-            necesarios para calcular la funcion de onda correspondiente
-            y no tengo que iniciar todo de nuevo*/
-            if (k>nd)
-            {
-                k=499;
-            }
-                
-            probabilidad<<k<<" , "<< prob << endl;
-    
-            k=k+1;
-
-            /*Evaluo beta usando gamma y el valor inicial de beta*/
-            /*No tengo que evaluar el primero todo el rato porque siempre vale 0*/
-            for (j=N-2; j>=0; j--)
-            {
-                beta[j-1]=(1.0/gamma[j])*(4.0*i*fo[j]/s-beta[j]);
-            }
-
-            /*Calculo x*/
-            x[0]=0.0+0.0*i;
-            for (j=0; j<N-2; j++)
-            {
-                x[j+1]=alfa[j]*x[j]+beta[j];
-            }
-        }
-        probabilidad<<endl;
-        probabilidad<<"----------------------------"<<endl;
-        probabilidad<<"El maximo es: "<<prob2<<endl;
-        probabilidad<<"Se da para: "<< nd<<endl;
-        
-        /*Una vez que he encontrado el maximo local, realizo nd ciclos*/
         
         z=0;  
-        while (z<nd+1)
+        while (z<N/2)
         {
             /*Evaluo la funcion de onda*/
             
@@ -209,8 +150,6 @@ int main (void)
     }
     coeficiente<<lamb<< " , "<<m*1.0/h<<endl;
     
-    
-    probabilidad.close();
     probabilidad2.close();
     coeficiente.close();
     return 0;
