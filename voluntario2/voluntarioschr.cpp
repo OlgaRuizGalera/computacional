@@ -6,11 +6,6 @@
 #include <cstdlib>
 #include <ctime>
 
-/* En este caso tendre el mismo codigo que en el obligatorio pero añadiendo calculos
-Voy a definir un vector probabilidad para poder buscar el maximo en un intervalode tiempo
-Por tanto necesito tambine una funcion que me busque el maximo valor y lo asigne a un nd
-Una vez encontrado nd empiezo un bucle que se evalue las veces que dice el pdf
-Cada vez que el contador llegue a nd evaluo la probabilidad y sigo el paso 6*/
 
 #define PI 3.14159
 
@@ -107,8 +102,6 @@ int main (void)
                 
         } 
 
-        /*Evalua aqui la probabilidad de encontrar la particula a la derecha*/
-        /*La probabilidad la mido con h-1 porque el bucle empieza con h=1*/
         prob=0.0;
         for (j=4*N/5; j<N; j++)
         {
@@ -124,7 +117,6 @@ int main (void)
         }
 
          /*Condicion para que no haga iteraciones de mas sin sentido*/
-        /*Eliminar esta condicion si hay pequeños maximos de prob*/
         /*if (k>nd)
         {
             k=2999;
@@ -148,7 +140,6 @@ int main (void)
             x[j+1]=alfa[j]*x[j]+beta[j];
         }
     }
-    /*DE este bucle saco la probabilidad y nd*/
     probabilidad<<endl;
     probabilidad<<"----------------------------"<<endl;
     probabilidad<<"El maximo es: "<<prob2<<endl;
@@ -156,10 +147,9 @@ int main (void)
     probabilidad<<"NOrma total: "<<normatotal<<endl;
 
     /*Me voy a quedar con este valor de probablidad porque siempre sale el mismo*/
-    /*j es contador para m vector*/
-    /*Una vez q tengo nd y p(nd) calculo K*/
+    
     q=0;
-    /*LO calculo 50 veces para que me de algo decente*/
+    /*LO calculo 70 veces para que me de algo decente*/
     while (q<70)
     {
        m=0;
@@ -186,8 +176,6 @@ int main (void)
     errorcoef=montecarlo(coeftotal, coef, q);
     coeficiente<<lamb<< " , "<<coeftotal<<endl;
     coeficiente<<3.0*sqrt(errorcoef/70.0)<<endl;
-
-    /*Bucle para calcular el valor esperado*/
 
     
     probabilidad.close();

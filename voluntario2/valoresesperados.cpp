@@ -7,9 +7,6 @@
 #define PI 3.14159
 
 /*ESte programilla es para calcular los valores esperados*/
-/*SE calculan desde o hasta N asique necesito un bucle
-de N pasos cada vez que calculo la función de onda*/
-/*Luego hago el promedio y calculo error por montecarlo*/
 
 using namespace std;
 
@@ -44,9 +41,7 @@ int main (void)
     /*Doy valores iniciales evaluando con los parametros anteriores*/
     k0=2.0*PI*(1.0*ncic)/(1.0*N);
     s=1.0/(4.0*k0*k0);
-
-    /*Creo el potencial como un vector para luego poder identificarlo punto a punto del espacio
-    y no tener qu edarle valores todo el rato*/
+    
     for (j=0; j<N; j++)
     {
         if ((j>=(2*N/5)) && (j<=(3*N/5)))
